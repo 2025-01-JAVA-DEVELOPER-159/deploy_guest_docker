@@ -28,3 +28,10 @@ export const apptitle=async ()=>{
    const responseText= await response.text();
    return responseText;
 }
+export const appimage=async ()=>{
+   const response=await fetch(`${BACKEND_SERVER}/image`,{
+      method:'GET'
+   });
+   const responseText= await response.text();
+   return responseText;
+}

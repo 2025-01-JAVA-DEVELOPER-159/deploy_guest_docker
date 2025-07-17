@@ -27,14 +27,14 @@ public class ApplicationController {
 
     @Value(value = "${volume-path.persistent-volume-data}")
     private String volumePathPersistentVolumeData;
-
     @Value(value = "${volume-path.pod-volume-data}")
     private String volumePathPodVolumeData;
-
     @Value(value = "${application.role}")
     private String applicationRole;
     @Value(value = "${application.version}")
     private String applicationVersion;
+    @Value(value = "${application.image}")
+    private String applicationImage;
     @Value(value = "${spring.profiles.active}")
     private String applicationProfile;
     private Boolean ready = true;
@@ -44,7 +44,7 @@ public class ApplicationController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Welcome to Kubernetes Another Class";
+        return "Welcome to Kubernetes Another Class\n";
     }
 
     @GetMapping("/ready")
@@ -138,12 +138,12 @@ public class ApplicationController {
 
     @GetMapping("/hostname")
     public String hostname() {
-        return defaultService.hostname();
+        return defaultService.hostname()+"\n";
     }
 
     @GetMapping("/hostip")
     public String hostip() {
-        return defaultService.hostip();
+        return defaultService.hostip()+"\n";
     }
 
     @GetMapping("/memory-leak")
@@ -159,19 +159,24 @@ public class ApplicationController {
 
     @GetMapping("/app-title")
     public ResponseEntity<Object> appTitle() {
-        String returnString = " [" + applicationVersion + "]" + defaultService.hostip() + "," + applicationProfile;
+        String returnString = " [ " + applicationVersion + " ]" + defaultService.hostname() + "," + applicationProfile;
         return ResponseEntity.ok(returnString);
     }
 
     @GetMapping("/version")
     public ResponseEntity<Object> version() {
-        String returnString = "[App Version] : " + applicationVersion;
+        String returnString = "[App Version] : " + applicationVersion+"\n";
+        return ResponseEntity.ok(returnString);
+    }
+    @GetMapping("/image")
+    public ResponseEntity<Object> image() {
+        String returnString =applicationImage;
         return ResponseEntity.ok(returnString);
     }
 
     @GetMapping("/profile")
     public ResponseEntity<Object> profile() {
-        String returnString = applicationProfile;
+        String returnString = applicationProfile+"\n";
         return ResponseEntity.ok(returnString);
     }
 
