@@ -1,0 +1,25 @@
+name: docker-compose-guest-oracle
+services:
+  oracleservice:
+    container_name: docker_compose_oracle_container
+    build:
+      context: ./
+      dockerfile: DockerfileOracle
+    volumes:
+      - oracle_volume:/opt/oracle/oradata 
+    ports:
+      - 1521:1521
+  guestservice1:
+    depends_on:
+      - oracleservice
+    container_name: docker_compose_guest_container1
+    build:
+      context: ./
+      dockerfile: DockerfileGuest
+    command: ["-jar", "-Dspring.profiles.active=prod-oracle","app.jar"]  
+    ports:
+      - 9095:80
+    restart: on-failure
+volumes:
+  oracle_volume:
+    external: true

@@ -1,0 +1,44 @@
+
+name: docker-compose-db
+version: '1.0'
+services:
+  mysqlservice:
+    image: mysql
+    container_name: mysql_compose_container
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: guestdb
+      MYSQL_USER: jdeveloper
+      MYSQL_PASSWORD: jdeveloper
+      TZ: Asia/Seoul
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    volumes:
+      - ./001.mysql_init.sql:/docker-entrypoint-initdb.d/001.mysql_init.sql  
+      - mysql_volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306:3306
+  oracleservice:
+    container_name: oracle_compose_container
+    build:
+      context: .
+      dockerfile: DockerfileOracle
+    volumes:
+      - oracle_volume:/opt/oracle/oradata   
+    ports:
+      - 1521:1521
+
+
+# 네트워크 정의
+
+
+volumes:
+  oracle_volume:
+    external: true
+  mysql_volume:
+    external: true  
+
+
+

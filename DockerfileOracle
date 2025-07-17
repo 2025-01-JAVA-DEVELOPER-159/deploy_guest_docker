@@ -1,0 +1,17 @@
+# Oracle XE 최신 이미지 사용
+FROM container-registry.oracle.com/database/express:latest
+VOLUME [ "/opt/oracle/oradata" ]
+# 환경 변수 설정
+ENV ORACLE_PWD=sys                       
+ENV ORACLE_CHARACTERSET=AL32UTF8           
+ENV ORACLE_SID=XE                           
+
+# 초기화 SQL 파일 복사 (옵션)
+#COPY 001.oracle_init.sql /docker-entrypoint-initdb.d/
+#COPY 001.oracle_init.sql /opt/oracle/scripts/setup/
+COPY 001.oracle_init.sql /opt/oracle/scripts/startup/
+#CMD ["bash", "-c", "/opt/oracle/runOracle.sh"]
+# 기본 포트 노출
+EXPOSE 1521 8080
+
+

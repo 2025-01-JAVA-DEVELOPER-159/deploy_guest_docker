@@ -1,0 +1,21 @@
+name: docker-compose-guest-mysql
+services:
+  mysqlservice:
+    container_name: docker_compose_mysql_container
+    image: academyitwill/mysql_dockerfile_image:latest  # 도커 허브에서 앱 이미지 사용
+    volumes:
+     - mysql_volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+  guestservice2:
+    depends_on:
+      - mysqlservice
+    container_name: docker_compose_guest_container2
+    image: academyitwill/guest_spring_dockerfile_image:latest # 도커 허브에서 앱 이미지 사용
+    command: ["-jar", "-Dspring.profiles.active=prod-mysql","app.jar"]  
+    ports:
+      - 80:80
+    restart: on-failure 
+volumes:
+  mysql_volume:
+    external: true

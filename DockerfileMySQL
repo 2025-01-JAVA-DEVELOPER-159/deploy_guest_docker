@@ -1,0 +1,12 @@
+FROM mysql:latest
+# MySQL 설정
+#VOLUME [ "/var/lib/mysql" ]
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=guestdb
+ENV MYSQL_USER=jdeveloper
+ENV MYSQL_PASSWORD=jdeveloper
+ENV TZ=Asia/Seoul
+# 포트 설정 (기본 MySQL 포트는 3306)
+COPY 001.mysql_init.sql /docker-entrypoint-initdb.d/
+CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+EXPOSE 3306
